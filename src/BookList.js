@@ -8,7 +8,7 @@ function BookList(props) {
 			<div className="list-books-title">
 				<h1>MyReads</h1>
 			</div>
-			<BookShelves books={props.books} />
+			<BookShelves books={props.books} updateShelf={props.updateShelf} />
 			<div className="open-search">
 				<Link to="/search">Add a book</Link>
 			</div>

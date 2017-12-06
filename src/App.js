@@ -6,15 +6,14 @@ import * as BooksAPI from './BooksAPI';
 import './App.css';
 
 class BooksApp extends Component {
-    state = {
-        /**
-         * TODO: Instead of using this state variable to keep track of which page
-         * we're on, use the URL in the browser's address bar. This will ensure that
-         * users can use the browser's back and forward buttons to navigate between
-         * pages, as well as provide a good URL they can bookmark and share.
-         */
-        books: []
+    constructor(props){
+        super(props);
+        this.state = {
+            books: []
+        }
+        this.updateShelf = this.updateShelf.bind(this);
     }
+
 
     componentDidMount() {
         BooksAPI.getAll().then(books => {
@@ -22,15 +21,24 @@ class BooksApp extends Component {
         });
     }
 
-    ShelfChange(){
-
+    updateShelf(id,shelf){
+        this.setState(state => {
+            // 这样写就是命令式，而不是声明式了...(这里需要优化)
+            let maintainBooks = state.books.filter(book => book.id !== id);
+            let updateBook = state.books.filter(book => book.id === id)[0];
+            updateBook.shelf = shelf;
+            maintainBooks.push(updateBook);
+            return {
+                books: maintainBooks
+            };
+        });
     }
 
     render() {
         return (
             <div className="app">
                 <Route path="/search" render={() => <SearchBooks books={this.state.books} />} />
-                <Route exact path="/" render={() => <BookList books={this.state.books} />} />
+                <Route exact path="/" render={() => <BookList books={this.state.books} updateShelf={this.updateShelf} />} />
             </div>
         );
     }
