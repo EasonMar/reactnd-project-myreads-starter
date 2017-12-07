@@ -23,13 +23,13 @@ class BooksApp extends Component {
 
     updateShelf(id,shelf){
         this.setState(state => {
-            // 这样写就是命令式，而不是声明式了...(这里需要优化)
-            let maintainBooks = state.books.filter(book => book.id !== id);
-            let updateBook = state.books.filter(book => book.id === id)[0];
-            updateBook.shelf = shelf;
-            maintainBooks.push(updateBook);
             return {
-                books: maintainBooks
+                books: state.books.map(book => {
+                    if(book.id === id){
+                        book.shelf = shelf;
+                    }
+                    return book;
+                })
             };
         });
     }
