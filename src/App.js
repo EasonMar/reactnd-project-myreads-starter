@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
-import SearchBooks from './SearchBooks.js';
+import SearchList from './SearchList.js';
 import BookList from './BookList.js';
 import * as BooksAPI from './BooksAPI';
 import './App.css';
@@ -18,6 +18,7 @@ class BooksApp extends Component {
     componentDidMount() {
         BooksAPI.getAll().then(books => {
             this.setState({ books });
+            console.log(books);
         });
     }
 
@@ -37,7 +38,7 @@ class BooksApp extends Component {
     render() {
         return (
             <div className="app">
-                <Route path="/search" render={() => <SearchBooks books={this.state.books} />} />
+                <Route path="/search" render={() => <SearchList />} />
                 <Route exact path="/" render={() => <BookList books={this.state.books} updateShelf={this.updateShelf} />} />
             </div>
         );

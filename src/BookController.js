@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import * as BooksAPI from './BooksAPI';
 
-class ShelfChanger extends Component {
+class BookController extends Component {
 
 	onChangeShelf(book, shelf){
 		// 将'更新state/UI'与'更新API的数据'解耦
@@ -25,4 +25,4 @@ class ShelfChanger extends Component {
 	}
 }
 
-export default ShelfChanger;
+export default BookController;
