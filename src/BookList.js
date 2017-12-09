@@ -10,7 +10,7 @@ class BookList extends Component {
 	]
 
 	render() {
-		const { books, updateShelf } = this.props;
+		const { books, updateBook } = this.props;
 		return (
 			<div className="list-books">
 				<div className="list-books-title">
@@ -27,7 +27,7 @@ class BookList extends Component {
 											books.filter(book => book.shelf === shelf.type)
 												.map(book => (
 													<li key={book.id}>
-														<Books book={book} updateShelf={updateShelf} />
+														<Books book={book} updateBook={updateBook} />
 													</li>
 												))
 										}

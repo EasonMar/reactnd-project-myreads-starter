@@ -11,26 +11,20 @@ class BooksApp extends Component {
         this.state = {
             books: []
         }
-        this.updateShelf = this.updateShelf.bind(this);
+        this.updateBook = this.updateBook.bind(this);
     }
 
 
     componentDidMount() {
         BooksAPI.getAll().then(books => {
             this.setState({ books });
-            console.log(books);
         });
     }
 
-    updateShelf(id,shelf){
+    updateBook(new_book){
         this.setState(state => {
             return {
-                books: state.books.map(book => {
-                    if(book.id === id){
-                        book.shelf = shelf;
-                    }
-                    return book;
-                })
+                books: state.books.filter(book => book.id !== new_book.id).concat([new_book])
             };
         });
     }
@@ -38,8 +32,8 @@ class BooksApp extends Component {
     render() {
         return (
             <div className="app">
-                <Route path="/search" render={() => <SearchList books={this.state.books} />} />
-                <Route exact path="/" render={() => <BookList books={this.state.books} updateShelf={this.updateShelf} />} />
+                <Route path="/search" render={() => <SearchList books={this.state.books} updateBook={this.updateBook} />} />
+                <Route exact path="/" render={() => <BookList books={this.state.books} updateBook={this.updateBook} />} />
             </div>
         );
     }

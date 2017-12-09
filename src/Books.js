@@ -2,7 +2,7 @@ import React from 'react';
 import BookController from './BookController.js';
 
 function Books(props) {
-	const {book,updateShelf} = props;
+	const {book,updateBook} = props;
 	return (
 		<div className="book">
 			<div className="book-top">
@@ -16,7 +16,7 @@ function Books(props) {
 						}&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE73-GnPVEyb7MOCxDzOYF1PTQRuf6nCss9LMNOSWBpxBrz8Pm2_mFtWMMg_Y1dx92HT7cUoQBeSWjs3oEztBVhUeDFQX6-tWlWz1-feexS0mlJPjotcwFqAg6hBYDXuK_bkyHD-y&source=gbs_api")`
 					}}
 				/>
-				<BookController book={book} updateShelf={updateShelf} />
+				<BookController book={book} updateBook={updateBook} />
 			</div>
 			<div className="book-title">{book.title}</div>
 			{book.authors && book.authors.map((author, index) => (

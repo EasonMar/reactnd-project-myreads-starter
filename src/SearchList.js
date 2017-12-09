@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import * as BooksAPI from './BooksAPI.js';
+import Books from './Books.js';
 
 class SearchList extends Component {
 	constructor(props) {
@@ -9,13 +10,19 @@ class SearchList extends Component {
 			query: '',
 			books: []
 		};
+
+		this.keyTime = 0;
 	}
 
 	updateQuery = query => {
+		clearTimeout(this.keyTime);
 		let _query = query.trim();
 		this.setState({ query: _query });
-		this.searchBooks(_query);
-	}
+		// 避免oninput时不断触发searchBooks
+		this.keyTime = setTimeout(()=>{
+			this.searchBooks(_query);
+		},100)
+	};
 
 	searchBooks(query) {
 		if (query) {
@@ -35,9 +42,10 @@ class SearchList extends Component {
 						return book;
 					});
 					this.setState({ books });
+					console.log(books);
 				} else {
 					alert(res_books.error);
-					this.setState({ query: '' });
+					this.setState({ query: '', books:[] }); // 清空结果
 				}
 			});
 		} else {
@@ -46,23 +54,36 @@ class SearchList extends Component {
 	}
 
 	render() {
-		const { query } = this.state;
+		const { query, books } = this.state;
+		const { updateBook } = this.props;
 
 		return (
 			<div className="search-books">
 				<div className="search-books-bar">
-					<Link to="/" className="close-search">Close</Link>
+					<Link to="/" className="close-search">
+						Close
+					</Link>
 					<div className="search-books-input-wrapper">
 						<input
 							type="text"
 							value={query}
-							onChange={event => this.updateQuery(event.target.value) }
+							onChange={event =>
+								this.updateQuery(event.target.value)
+							}
 							placeholder="Search by title or author"
 						/>
 					</div>
 				</div>
 				<div className="search-books-results">
-					<ol className="books-grid" />
+					<ol className="books-grid">
+						{books.map(book => (
+							<Books
+								book={book}
+								updateBook={updateBook}
+								key={book.id}
+							/>
+						))}
+					</ol>
 				</div>
 			</div>
 		);
