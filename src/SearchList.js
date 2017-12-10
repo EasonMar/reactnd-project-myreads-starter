@@ -45,7 +45,7 @@ class SearchList extends Component {
 					console.log(books);
 				} else {
 					alert(res_books.error);
-					this.setState({ query: '', books:[] }); // 清空结果
+					this.setState({ query: '', books:[] });
 				}
 			});
 		} else {
