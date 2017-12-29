@@ -7,6 +7,7 @@ class BookController extends Component {
 		BooksAPI.update(book, new_shelf);
 		book.shelf = new_shelf;
 		this.props.updateBook(book);
+		// 也可以不解耦,但是更改Book的状态需要异步请求,如果在更改状态时能给一些视觉上的反馈就更好
 	}
 
 	render() {

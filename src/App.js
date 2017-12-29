@@ -14,7 +14,6 @@ class BooksApp extends Component {
         this.updateBook = this.updateBook.bind(this);
     }
 
-
     componentDidMount() {
         BooksAPI.getAll().then(books => {
             this.setState({ books });
@@ -33,7 +32,7 @@ class BooksApp extends Component {
         return (
             <div className="app">
                 <Route path="/search" render={() => <SearchList books={this.state.books} updateBook={this.updateBook} />} />
-                <Route exact path="/" render={() => <BookList books={this.state.books} updateBook={this.updateBook} />} />
+                <Route path="/" exact render={() => <BookList books={this.state.books} updateBook={this.updateBook} />} />
             </div>
         );
     }

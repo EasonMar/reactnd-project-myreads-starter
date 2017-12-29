@@ -14,38 +14,47 @@ class SearchList extends Component {
 		this.keyTime = 0;
 	}
 
+	/**
+	 * 仅仅更新 .state.query ，而不发起网络请求
+	 */
 	updateQuery = query => {
-		clearTimeout(this.keyTime);
 		let _query = query.trim();
 		this.setState({ query: _query });
-		// 避免oninput时不断触发searchBooks
-		this.keyTime = setTimeout(()=>{
-			this.searchBooks(_query);
-		},100)
-	};
+	}
 
+	/**
+	 * 输入完之后通过按下回车键来发起请求
+	 */
+	handleKeyPress = (e) => {
+		if (e.key === 'Enter') {
+			this.searchBooks(e.target.value);
+		}
+	}
+
+	/**
+	 * 查找书本
+	 * @param  {string} query 查询关键字
+	 */
 	searchBooks(query) {
 		if (query) {
 			BooksAPI.search(query).then(res_books => {
 				if (Array.isArray(res_books)) {
-					const books_in_shelf = this.props.books.map(
-						book => book.id
-					);
+					// 获取书架中已有书籍的id
+					const books_in_shelf = this.props.books.map(book => book.id);
 					let books = res_books.map(book => {
-						if (books_in_shelf.indexOf(book.id) > -1) {
-							return this.props.books.filter(
-								shelf_book => shelf_book.id === book.id
-							)[0];
+						// Array.prototype.includes() 方法判断一个元素是否存在于数组中
+						if (books_in_shelf.includes(book.id)) {
+							// Array.prototype.find() 方法会返回第一个符合条件的数组成员
+							return this.props.books.find(shelf_book => shelf_book.id === book.id);
 						} else {
 							book.shelf = 'none';
 						}
 						return book;
 					});
 					this.setState({ books });
-					console.log(books);
 				} else {
 					alert(res_books.error);
-					this.setState({ query: '', books:[] });
+					this.setState({ query: '', books:[] }); // 清空state
 				}
 			});
 		} else {
@@ -70,6 +79,7 @@ class SearchList extends Component {
 							onChange={event =>
 								this.updateQuery(event.target.value)
 							}
+							onKeyPress={this.handleKeyPress}
 							placeholder="Search by title or author"
 						/>
 					</div>
